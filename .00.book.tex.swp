@@ -94,7 +94,26 @@ Lebih detail mengenai diagram-diagram tersebut akan dijelaskan sebagai berikut.
 
 
 \subsection{Diagram \textit{Use-Case}}
+
+Diagram \textit{Use-Case} ini akan menjelaskan gambaran menyeluruh atau gambaran besar aktifitas antara pengguna dengan sistem yang dibangun. Diagram \textit{Use-Case} pada sistem ini seperti terlihat pada gambar \ref{fig:uml-use-case} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./resources/uml/uml-use-case}
+  \caption{Diagram \textit{Use-Case} Sistem \textit{Web Services} Pencatatan Pembayaran PBB-P2}
+  \label{fig:uml-use-case}
+\end{figure}
+
+Yang menjadi aktor disini adalah Bank dalam artian \textit{client} yang akan melakukan akses ke sistem \textit{web services} pencatatan pembayaran Pajak Bumi dan Bangunan Perdesaan dan Perkotaan (PBB-P2).
+
+Akses yang dapat dilakukan oleh \textit{client} ada 3 (tiga) skenario, yaitu \textit{Inquiry}, Pembayaran, dan \textit{Reversal}
+
+\textit{Inquiry} ini adalah permintaan informasi PBB-P2 Terhutang oleh \textit{client} ke \textit{server web services}. Skenario Pembayaran adalah permintaan dari \textit{client} ke \textit{server web services} untuk melakukan pencatatan pembayaran PBB-P2 berdasarkan Nomor Objek Pajak (NOP) dan Tahun Pajak yang akan dicatatkan pembayarannya. Sedangkan skenario \textit{reversal} adalah permintaan oleh \textit{client} ke \textit{server web services} untuk melakukan pembatalan pencatatan pembayaran yang telah dilakukan.
+
 \subsection{Diagram \textit{Activity}}
+
+Diagram \textit{Activity} ini 
+
 \subsubsection{Diagram \textit{Activity} Untuk Skenario \textit{Inquiry}}
 \subsubsection{Diagram \textit{Activity} Untuk Skenario Pencatatan Pembayaran}
 \subsubsection{Diagram \textit{Activity} Untuk Skenario \textit{Reversal}}
