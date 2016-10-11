@@ -112,9 +112,23 @@ Akses yang dapat dilakukan oleh \textit{client} ada 3 (tiga) skenario, yaitu \te
 
 \subsection{Diagram \textit{Activity}}
 
-Diagram \textit{Activity} ini 
+Diagram \textit{Activity} ini akan menggambarkan alur dari tiap skenario yang terdapat pada diagram \textit{use-case}. Diagramnya akan dijelaskan lebih lanjut pada bagian berikut.
 
 \subsubsection{Diagram \textit{Activity} Untuk Skenario \textit{Inquiry}}
+
+Diagram \textit{activity} untuk skenario \textit{inquiry} ini akan menjelaskan alur proses dari skenario \textit{inquiry} atau skenario permintaan data oleh \textit{client} berupa informasi tagihan PBB-P2. Diagram \textit{activity} untuk skenario \textit{inquiry} ini seperti terlihat pada gambar \ref{fig:uml-act-inquiry} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./resources/uml/uml-act-inquiry}
+  \caption{Diagram \textit{Activity} Untuk Skenario \textit{Inquiry}}
+  \label{fig:uml-act-inquiry}
+\end{figure}
+
+Pada skenario \textit{inquiry} ini, awalnya \textit{server} akan menerima \textit{request inquiry} dari \textit{client}, kemudian \textit{server} melakukan pemeriksaan apakah tahun pajak yang menjadi parameter masukkan permintaan data mengandung karakter selain angka atau tidak, bila mengandung angka, maka \textit{server} akan mengirimkan respon kesalahan ke \textit{client} bahwa tahun pajak yang diminta mengandung karakter bukan angka.
+
+Bila tahun pajak tidak mengandung karaketer bukan angka, maka \textit{server} aplikasi \textit{web services} akan melakukan pengambilan data ke \textit{server} basis data dan dilakukan pengecekan, apakah data yang diminta ada atau tidak, bila tidak ada \textit{server} akan mengirimkan respon kesalahan ke \textit{client} bahwa data yang diminta tidak ditemukan. Namun bila data ditemukan maka \textit{server} akan mengirimkan respon ke \textit{client} data yang diminta.
+
 \subsubsection{Diagram \textit{Activity} Untuk Skenario Pencatatan Pembayaran}
 \subsubsection{Diagram \textit{Activity} Untuk Skenario \textit{Reversal}}
 \subsection{Diagram \textit{Class}}
