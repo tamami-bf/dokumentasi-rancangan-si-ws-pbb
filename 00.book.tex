@@ -130,8 +130,59 @@ Pada skenario \textit{inquiry} ini, awalnya \textit{server} akan menerima \texti
 Bila tahun pajak tidak mengandung karaketer bukan angka, maka \textit{server} aplikasi \textit{web services} akan melakukan pengambilan data ke \textit{server} basis data dan dilakukan pengecekan, apakah data yang diminta ada atau tidak, bila tidak ada \textit{server} akan mengirimkan respon kesalahan ke \textit{client} bahwa data yang diminta tidak ditemukan. Namun bila data ditemukan maka \textit{server} akan mengirimkan respon ke \textit{client} data yang diminta.
 
 \subsubsection{Diagram \textit{Activity} Untuk Skenario Pencatatan Pembayaran}
+
+Diagram \textit{activity} untuk skenario pencatatan pembayaran akan menjelaskan alur aktifitas pada saat \textit{client} melakukan \textit{request} pencatatan pembayaran ke \textit{server}. Diagram \textit{activity} untuk skenario ini seperti terlihat pada gambar \ref{fig:uml-act-bayar} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./resources/uml/uml-act-bayar}
+  \caption{Diagram \textit{Activity} Untuk Skenario Pencatatan Pembayaran}
+  \label{fig:uml-act-bayar}
+\end{figure}
+
+Pertama yang ditangani oleh \textit{server} dari \textit{client} adalah melakukan pencatatan alamat IP \textit{client} untuk keperluan audit. 
+
+Kemudian melakukan pemeriksaan terhadap parameter tanggal pembayaran, bila tanggal pembayaran lebih dari tanggal saat ini, maka \textit{server} akan mengirimkan respon kesalahan ke \textit{client} karena tidak mungkin tanggal pembayaran terjadi setelah tanggal pencatatan ke SISMIOP.
+
+Selanjutnya adalah melakukan pemeriksaan tagihan pada basis data sesuai parameter yang dikirimkan oleh \textit{client}. Apabila tagihan telah terbayar, atau jumlah tagihan nihil, atau tagihan telah dibatalkan, maka \textit{server} akan mengirimkan respon informasi ke \textit{client} bahwa nomor objek pajak untuk tahun pajak yang diminta telah terbayar, nihil, atau telah dibatalkan.
+
+Langkah setelah melewati serangkaian pemeriksaan parameter tersebut adalah melakukan pencatatan pembayaran pada basis data dan mengirimkan respon informasi ke \textit{client} bahwa pencatatan pembayaran pada basis data telah sukses dan selesai.
+
 \subsubsection{Diagram \textit{Activity} Untuk Skenario \textit{Reversal}}
+
+Diagram \textit{activity} untuk \textit{reversal} akan menggambarkan rinci dari alur proses \textit{reversal} terjadi. Diagram \textit{activity} untuk skenario \textit{reversal} ini seperti terlihat pada gambar \ref{fig:uml-act-reversal} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./resources/uml/uml-act-reversal}
+  \caption{Diagram \textit{Activity} Untuk Skenario \textit{Reversal}}
+  \label{fig:uml-act-reversal}
+\end{figure}
+
+Seperti pada skenario pembayaran, karena transaksi yang dilakukan pada kasus ini akan merubah isi dari basis data, maka hal pertama yang dilakukan adalah mencatat alamat IP dari \textit{client}.
+
+Kemudian melakukan pemeriksaan pada basis data apakah data yang diminta untuk dilakukan \textit{reversal} berdasarkan parameter-parameter yang dikirimkan ada pada basis data atau tidak, bila tidak ada maka \textit{server} akan mengirimkan respon kesalahan bahwa data yang diminta tidak ada.
+
+Bila data yang diminta ada pada basis data, maka proses \textit{reversal} dilakukan, yaitu dengan menghapuskan data pembayaran dan merubah \textit{flag} status pembayaran pada tabel sppt, dan menyimpan catatan penghapusan data pembayaran pada basis data. Terakhir mengirimkan respon ke \textit{client} bahwa proses \textit{reversal} telah selesai dilakukan.
+
 \subsection{Diagram \textit{Class}}
+
+Pada diagram \textit{class} akan digambarkan hubungan dari tiap kelas hasil implementasi dari objek-objek yang tergambar pada diagram \textit{activity}, namun ada beberapa kelas-kelas yang memang terbentuk karena lingkungan \textit{framework} mengharuskan seperti itu.
+
+Diagram \textit{class} untuk sistem ini seperti terlihat pada gambar \ref{fig:uml-class} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{./resources/uml/uml-class}
+  \caption{Diagram \textit{Class}}
+  \label{fig:uml-class}
+\end{figure}
+
+Kelas-kelas yang merupakan tuntutan dari \textit{framework} Spring adalah kelas AppInitializer dan AppConfig. AppInitializer adalah kelas awal yang mewarisi \textit{interface} AbstractAnnotationConfigDispatcherServletInitializer milik Spring yang akan dipanggil pada saat awal aplikasi web akan dijalankan.
+
+Sedangkan kelas AppConfig adalah kelas yang akan menampung konfigurasi aplikasi web nantinya, termasuk disana adalah pemanggilan kelas konfigurasi lainnya, yaitu HibernateConfig yang bertugas melakukan konfigurasi terhadap komunikasi yang terjadi antara aplikasi dengan \textit{server} basis data.
+
+Titik awal dari setiap \textit{request} yang masuk ke \textit{server} akan melalui kelas SpptRestController, 
 \subsection{Diagram \textit{Sequence}}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario Konfigurasi \textit{Spring Framework}}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Gagal Karena Tahun Pajak Bukan Angka}
