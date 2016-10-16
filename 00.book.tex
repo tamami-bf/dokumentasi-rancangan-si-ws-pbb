@@ -182,9 +182,25 @@ Kelas-kelas yang merupakan tuntutan dari \textit{framework} Spring adalah kelas 
 
 Sedangkan kelas AppConfig adalah kelas yang akan menampung konfigurasi aplikasi web nantinya, termasuk disana adalah pemanggilan kelas konfigurasi lainnya, yaitu HibernateConfig yang bertugas melakukan konfigurasi terhadap komunikasi yang terjadi antara aplikasi dengan \textit{server} basis data.
 
-Titik awal dari setiap \textit{request} yang masuk ke \textit{server} akan melalui kelas SpptRestController, 
+Titik awal dari setiap \textit{request} yang masuk ke \textit{server} akan melalui kelas SpptRestController, dari kelas ini nantinya akan diteruskan ke kelas-kelas \textit{services} yang melayani, seperti kelas SpptServiceImpl, PembayaranServicesImpl, dan ReversalServicesImpl.
+
+Kelas-kelas \textit{services} ini akan bermuara pada satu kelas \textit{Data Access Object} (DAO) yaitu kelas StoreProceduresDaoImpl. Kelas inilah yang nantinya melakukan akses ke \textit{server} basis data, dan mengembalikannya dalam bentuk objek-objek atau kelas-kelas berikut : Kelas Sppt, untuk menampung informasi tagihan yang tercatat dalam basis data; kelas PembayaranSppt, untuk menampung informasi pencatatan pembayaran yang telah dilakukan dan sukses; yang terakhir adalah kelas ReversalPembayaran, yaitu untuk menampung transaksi \textit{reversal} yang telah sukses.
+
 \subsection{Diagram \textit{Sequence}}
+
+Diagram \textit{sequence} ini akan menggambarkan interaksi antar kelas untuk tiap alur skenario yang terjadi. Hasil skenario yang terdata adalah sebagai berikut :
+
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario Konfigurasi \textit{Spring Framework}}
+
+Diagram \textit{sequence} untuk skenario konfigurasi \textit{Spring Framework} akan menjelaskan alur yang terjadi saat \textit{container} melakukan inisialisasi sistem untuk siap menerima \textit{request} dari \textit{client}. Diagram ini seperti terlihat pada gambar \ref{fig:uml-seq--konf} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./resources/uml/uml-seq-konf}
+  \caption{Diagram \textit{Sequence} Untuk Skenario Konfigurasi \textit{Spring Framework}}
+  \label{fig:uml-seq-konf}
+\end{figure}
+
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Gagal Karena Tahun Pajak Bukan Angka}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Gagal Karena Data Tidak Ditemukan}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Gagal Karena Kesalahan Server}
