@@ -201,8 +201,36 @@ Diagram \textit{sequence} untuk skenario konfigurasi \textit{Spring Framework} a
   \label{fig:uml-seq-konf}
 \end{figure}
 
+Pada saat sistem sudah di \textit{deploy} pada \textit{container}, maka kelas awal yang diperiksa dan dieksekusi adalah kelas AppInitializer, kemudian kelas AppInitializer ini akan melakukan pembentukan instan kelas AppConfig, kemudian kelas AppConfig akan melakukan eksekusi terhadap kelas HibernateConfiguration sebagai penghubung dengan sistem basis data, dan kelas SpptRestController yang melakukan tugasnya sebagai pengontrol tiap \textit{request} yang diterima, dan diteruskan ke bagian-bagian yang menangani.
+
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Gagal Karena Tahun Pajak Bukan Angka}
+
+Diagram \textit{sequence} untuk skenario ini akan menjelaskan alur eksekusi dari awal \textit{request} diterima, sampai kepada kondisi dimana \textit{request} gagal untuk diproses karena parameter tahun pajak memiliki karakter bukan angka. Diagram untuk skenario ini seperti terlihat pada gambar \ref{fig:uml-seq-inq-thn-not-valid} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./resources/uml/uml-seq-inq-thn-not-valid}
+  \caption{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Yang Gagal Karena Tahun Pajak Mengandung Karakter Bukan Angka}
+  \label{fig:uml-seq-inq-thn-not-valid}
+\end{figure}
+
+Setiap \textit{request inquiry} yang masuk ke \textit{server} akan melalui \textit{method} getDataSppt milik kelas SpptRestController, kemudian pada \textit{method} getDataSppt ini akan dilakukan pemeriksaan terhadap parameter tahun pajak yang diinginkan oleh \textit{client}.
+
+Saat ditemukan bahwa parameter tahun pajak mengandung karakter bukan angka, maka akan dibuat instan dari kelas StatusInq sebagai bahan respon terhadap \textit{client} bahwa \textit{request} yang diminta tidak dapat diproses.
+
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Gagal Karena Data Tidak Ditemukan}
+
+Diagram \textit{sequence} ini akan menggambarkan alur komunikasi \textit{inquiry} yang gagal karena data Nomor objek Pajak (NOP) untuk tahun pajak yang diminta tidak ada pada basis data. Diagramnya terlihat seperti pada gambar \ref{fig:uml-seq-inq-not-any} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./resources/uml/uml-seq-inq-not-any}
+  \caption{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Yang Gagal Karena Data Tidak Ditemukan Dalam Basis Data}
+  \label{fig:uml-seq-inq-not-any}
+\end{figure}
+
+
+
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Gagal Karena Kesalahan Server}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Yang Sukses}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Gagal Karena Jam Pembayaran Melebihi Jam Pencatatan}
