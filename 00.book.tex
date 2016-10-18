@@ -233,10 +233,42 @@ Diagram \textit{sequence} ini akan menggambarkan alur komunikasi \textit{inquiry
 
 Selanjutnya di dalam \textit{method} getDataSppt milik kelas StoreProceduresDaoImpl melakukan eksekusi \textit{store procedure} dengan memanggil \textit{method} executeUpdate milik kelas CallableStatement, kemudian mengambil hasil dari pemanggilan \textit{store procedure} pada basis data dengan \textit{method} getObject.
 
-Namun pada saat pemanggilan \textit{method} getObject, data yang diminta tidak ada dalam basis data, sehingga kelas StoreProceduresDaoImpl akan membuat instan dari kelas StatusInq
+Namun pada saat pemanggilan \textit{method} getObject, data yang diminta tidak ada dalam basis data, sehingga kelas StoreProceduresDaoImpl akan membuat instan dari kelas StatusInq yang berisi informasi bahwa objek pajak untuk tahun pajak yang diinginkan tidak ada pada basis data. Kemudian instan kelas StatusInq ini dikembalikan ke kelas SpptRestController sebagai bahan respon ke \textit{client}.
 
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Gagal Karena Kesalahan Server}
+
+Diagram ini akan menjelaskan alur komunikasi data antar kelas bila ada kesalahan proses saat melakukan pemanggilan \textit{store procedure} pada \textit{server} basis data. Diagram \textit{sequence} untuk skenario ini seperti terlihat pada gambar \ref{fig:uml-seq-inq-db-error} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./resources/uml/uml-seq-inq-db-error}
+  \caption{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Yang Gagal Karena Kesalahan Komunikasi Antara \textit{Server} Aplikasi Dengan \textit{Server} Basis Data}
+  \label{fig:uml-seq-inq-db-error}
+\end{figure}
+
+\textit{Request} yang masuk untuk skenario \textit{inquiry} akan diterima dan diproses oleh \textit{method} getDataSppt milik kelas SpptRestController. Dari \textit{method} ini, kemudian akan dipanggil \textit{method} getSpptByNopThn milik kelas SpptServicesImpl.
+
+Dari \textit{method} getSpptByNopThn milik kelas SpptServicesImpl, kemudian memanggil \textit{method} getDataSppt milik kelas StoreProceduresDaoImpl, yang kemudian mencoba melakukan eksekusi \textit{store procedure} milik basis data dengan memanggil \textit{method} executeUpdate milik kelas CallableStatement, tetapi eksekusi ini karena beberapa hal yang tidak diketahui, hubungan komunikasi antara \textit{server} Aplikasi dengan \textit{server} basis data terputus, sehingga keluar \textit{exception} dan proses pengambilan atau \textit{inquiry} data tidak dapat diteruskan.
+
+Sampai sini, \textit{method} getDataSppt milik kelas StoreProceduresDaoImpl akan membuat instan dari kelas StatusInq yang berisi informasi kegagalan komunikasi ke \textit{server} basis data, hasil instan dari kelas StatusInq ini dikirimkan kembali ke kelas SpptRestController yang nantinya memberikan respon ke \textit{client} bahwa proses \textit{inquiry} gagal dilakukan.
+
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Yang Sukses}
+
+Diagram ini akan menjelaskan alur yang terjadi saat \textit{request inquiry} berhasil di respon sesuai data yang ada pada basis data. Diagram \textit{sequence} untuk skenario ini seperti terlihat pada gambar \ref{fig:uml-seq-inquiry} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{./resources/uml/uml-seq-inquiry}
+  \caption{Diagram \textit{Sequence} Untuk Skenario \textit{Inquiry} Yang Sukses}
+  \label{fig:uml-seq-inquiry}
+\end{figure}
+
+Proses \textit{request inquiry} dari \textit{client} akan berawal dari \textit{method} getDataSppt milik kelas SpptRestController, kemudian memanggil \textit{method} getSpptByNopThn milik kelas SpptServicesImpl, dari \textit{method} ini kemudian memanggil \textit{method} getDataSppt milik kelas StoreProceduresDaoImpl yang kemudian melakukan eksekusi terhadap \textit{store procedures} milik basis data dengan memanggil \textit{method} executeUpdate milik kelas CallableStatement.
+
+Untuk mendapatkan hasil dari pemanggilan \textit{store procedures} milik basis data, maka perlu dilakukan pemanggilan \textit{method} getObject milik kelas CallableStatement, yang hasilnya dimasukkan sebagai parameter pembentuk kelas Sppt.
+
+Langkah terakhir adalah membungkus instan kelas Sppt yang telah terisi data dari basis data dengan kelas StatusInq, kemudian instan dari kelas ini dikembalikan ke kelas SpptRestController yang akhirnya dikirimkan ke \textit{client} sebagai respon \textit{inquiry}.
+
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Gagal Karena Jam Pembayaran Melebihi Jam Pencatatan}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Gagal Karena Tagihan Telah Terbayar Atau Nihil}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Gagal Karena Telah Dibatalkan}
