@@ -270,8 +270,46 @@ Untuk mendapatkan hasil dari pemanggilan \textit{store procedures} milik basis d
 Langkah terakhir adalah membungkus instan kelas Sppt yang telah terisi data dari basis data dengan kelas StatusInq, kemudian instan dari kelas ini dikembalikan ke kelas SpptRestController yang akhirnya dikirimkan ke \textit{client} sebagai respon \textit{inquiry}.
 
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Gagal Karena Jam Pembayaran Melebihi Jam Pencatatan}
+
+Diagram ini akan menjelaskan alur komunikasi antar kelas pada saat ada \textit{request} pencatatan transaksi pembayaran tetapi gagal karena jam pada saat pembayaran melebihi jam pada saat pencatatan di basis data, karena tidak mungkin transaksi yang terjadi tercatat lebih dulu sebelum terjadinya pembayaran. Diagram \textit{sequence} untuk skenario ini seperti terlihat pada gambar \ref{fig:uml-seq-trx-tgl-bayar-error} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./resources/uml/uml-seq-trx-tgl-bayar-error}
+  \caption{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Yang Gagal Karena Jam Pembayaran Melebihi Jam Pencatatan}
+  \label{fig:uml-seq-trx-tgl-bayar-error}
+\end{figure}
+
+\textit{Request} yang datang dari \textit{client} akan langsung memanggil \textit{method} prosesPembayaran milik kelas SpptRestController. Di dalam \textit{method} ini, terdapat pemeriksaan parameter tanggal pembayaran yang apabila parameter tanggal pembayaran berisi tanggal yang melebihi tanggal saat ini, maka \textit{method} prosesPembayaran akan membentuk instan dari kelas StatusTrx, kemudian mengirimkan informasi kelas StatusTrx ini kepada \textit{client} bahwa tanggal dan jam pembayaran melebihi tanggal dan jam hari saat ini, sehingga proses pencatatan pembayaran tidak dapat dilakukan.
+
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Gagal Karena Tagihan Telah Terbayar Atau Nihil}
+
+Diagram ini akan menceritakan alur komunikasi antar kelas untuk skenario transaksi pembayaran yang gagal karena tagihan telah terbayar atau memang tagihan untuk nomor objek pajak (NOP) dan tahun pajak tersebut nihil. Diagram \textit{sequence} untuk skenario ini seperti terlihat pada gambar \ref{fig:uml-seq-trx-nihil} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./resources/uml/uml-seq-trx-nihil}
+  \caption{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Yang Gagak Karena Tagihan Telah Terbayar Atau Nihil}
+  \label{fig:uml-seq-trx-nihil}
+\end{figure}
+
+\textit{Request client} akan langsung diarahkan ke \textit{method} prosesPembayaran milik kelas SpptRestController, kemudian \textit{method} ini akan memanggil \textit{method} prosesPembayaran milik kelas PembayaranServicesImpl, lalu \textit{method} ini akan memanggil \textit{method} prosesPembayaran milik kelas StoreProceduresDaoImpl.
+
+Didalam \textit{method} prosesPembayaran milik kelas StoreProceduresDaoImpl, akan melakukan eksekusi terhadap \textit{store procedures} di sistem basis data dengan melakukan pemanggilan \textit{method} executeUpdate milik kelas CallableStatement, kemudian untuk mengambil hasil dari eksekusi \textit{store procedure}, dilakukan pemanggilan \textit{method} getObject milik kelas CallableStatement.
+
+Karena datanya telah terbayar, atau tagihannya nihil, maka \textit{store procedure} akan memberikan keterangan kondisi ini yang hasilnya disimpan pada kelas StatusTrx dan dikembalikan ke kelas SpptRestController sebagai bahan respon ke \textit{client}.
+
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Gagal Karena Telah Dibatalkan}
+
+Desain ini akan menjelaskan gambaran alur komunikasi antar kelas untuk skenario pencatatan transaksi pembayaran yang gagal karena tagihan untuk nomor objek pajak (NOP) dan tahun pajak yang diminta telah dibatalkan. Diagram \textit{Sequence} untuk skenario ini seperti pada gambar \ref{fig:uml-seq-trx-batal} :
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{./resources/uml/uml-seq-trx-batal}
+  \caption{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Yang Gagal Karena SPPT Telah Dibatalkan}
+  \label{fig:uml-seq-trx-batal}
+\end{figure}
+
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Gagal Karena Kesalahan Server}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario Transaksi Pembayaran Yang Sukses}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Reversal} Gagal Karena Data Yang Diminta Tidak Ada}
