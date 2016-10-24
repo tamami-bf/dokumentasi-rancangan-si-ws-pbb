@@ -346,9 +346,16 @@ Diagram ini akan menggambarkan alur komunikasi antar kelas untuk menyelesaikan s
   \label{fig:uml-seq-trx}
 \end{figure}
 
+\textit{Request} dari \textit{client} akan langsung ditangani oleh \textit{method} prosesPembayaran milik kelas SpptRestController, \textit{method} ini kemudian melakukan pemanggilan \textit{method} prosesPembayaran milik kelas PembayaranServicesImpl, selanjutnya \textit{method} prosesPembayaran milik kelas PembayaranServicesImpl akan memanggil \textit{method} prosesPembayaran milik kelas StoreProceduresDaoImpl.
 
+Dalam \textit{method} prosesPembayaran milik kelas StoreProceduresDaoImpl, ada beberapa kegiatan yang dilakukan, yaitu melakukan eksekusi \textit{store procedure} milik basis data dengan memanggil \textit{method} executeUpdate milik kelas CallableStatement, kemudian mengambil hasil dari pemanggilan \textit{store procedure} dengan \textit{method} getObject milik kelas CallableStatement pula, hasilnya disimpan dalam kelas PembayaranSppt.
+
+Kemudian langkah selanjutnya adalah membuat instan dari kelas StatusTrx dan memasukan instan kelas PembayaranSppt didalamnya sebagai informasi ke \textit{client} bahwa proses pencatatan pembayaran telah dilakukan dengan sukses. Hasil instan kelas StatusTrx ini kemudian dikembalikan ke kelas SpptRestController sebagai bahan respon ke \textit{client}.
 
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Reversal} Gagal Karena Data Yang Diminta Tidak Ada}
+
+Diagram ini akan memberikan gambaran bagaimana arus komunikasi terjadi sehingga skenario proses reversal yang gagal karena data yang diminta tidak ada pada sistem basis data. 
+
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Reversal} Gagal Karena Ada Data Pembayaran Yang Tercatat Ganda}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Reversal} Gagal Karena Kesalahan Server}
 \subsubsection{Diagram \textit{Sequence} Untuk Skenario \textit{Reversal} Yang Sukses}
