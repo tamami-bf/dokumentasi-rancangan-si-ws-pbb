@@ -414,9 +414,14 @@ Diagram ini akan menjelaskan alur komunikasi antar kelas agar skenario \textit{r
   \label{fig:uml-seq-rev}
 \end{figure}
 
+\textit{Request} untuk proses \textit{reversal} akan memanggil \textit{method} prosesReversal milik kelas SpptRestController. \textit{Method} ini kemudian memanggil \textit{method} prosesReversal milik kelas ReversalServicesImpl.
 
+Di dalam \textit{method} prosesReversal milik kelas ReversalServicesImpl akan memanggil \textit{method} reversalPembayaran milik kelas StoreProceduresDaoImpl. Kemudian di dalam \textit{method} reversalPembayaran ini akan melakukan eksekusi terhadap \textit{store procedure} yang berada pada sistem basis data dengan menggunakan \textit{method} executeUpdate milik kelas CallableStatement.
+
+Respon yang dihasilkan dari eksekusi \textit{store procedure} milik basis data diambil dengan \textit{method} getObject milik kelas CallableStatement. Kemudian hasilnya disimpan dalam instan kelas ReversalPembayaran, setelah itu instan kelas ReversalPembayaran dimasukkan dalam instan kelas StatusRev yang kemudian dikirimkan ke kelas SpptRestController sebagai bahan respon ke \textit{client}.
 
 \section{AKTIVITAS PEMROSESAN DATA}
+
 
 \begin{verbatim}
   Isinya :
