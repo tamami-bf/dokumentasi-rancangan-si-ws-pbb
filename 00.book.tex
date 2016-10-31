@@ -422,14 +422,75 @@ Respon yang dihasilkan dari eksekusi \textit{store procedure} milik basis data d
 
 \section{AKTIVITAS PEMROSESAN DATA}
 
+Aktivitas pemrosesan data akan terbagi menjadi 3 (tiga) proses inti seperti pada pembahasan diagram \textit{use-case}, yaitu aktivitas \textit{inquiry} data, aktivitas pencatatan pembayaran, dan aktivitas \textit{reversal} pembayaran.
 
-\begin{verbatim}
-  Isinya :
-    - output terpenting (goal)
-    - identifikasi input 
-    - alur pemrosesan data
-  Arahnya ke unit testing
-\end{verbatim}
+\subsection{Aktivitas \textit{Inquiry}}
 
+\textit{Output} terpenting dari aktivitas \textit{inquiry} ini adalah berupa informasi PBB-P2 sebagaimana yang tersimpan pada sistem basis data yang nantinya terdiri dari Nomor Objek Pajak (NOP), Tahun Pajak, Nama Wajib Pajak, Alamat objek Pajak, Besaran Pokok PBB-P2, dan Denda Administrasi bila ada.
+
+Sedangkan data yang diperlukan sebagai parameter \textit{input} adalah Nomor Objek Pajak (NOP) dan Tahun Pajak. Nantinya parameter-parameter ini akan diperiksa, seperti apakah tahun pajak mengandung karakter bukan angka, lalu benarkah NOP yang diminta ada pada basis data, dan beberapa pemeriksaan lain sehingga \textit{output} dapat dihasilkan dari 2 (dua) parameter \textit{input} ini.
+
+\subsection{Aktivitas Pencatatan Pembayaran}
+
+\textit{Output} terpenting dari aktivitas ini pada sistem basis data adalah sebagai berikut :
+
+\begin{enumerate}[1.]
+  \item Tercatatnya transaksi pembayaran pada tabel PEMBAYARAN\_SPPT.
+  \item Berubahnya isi kolom STATUS\_PEMBAYARAN\_SPPT pada tabel SPPT, dari karakter 0 (nol) menjadi 1 (satu), yang artinya bahwa NOP pada tahun pajak tersebut telah terbayar.
+  \item Tercatatnya aktivitas transaksi pembayaran ini pada tabel LOG\_TRX\_PEMBAYARAN.
+\end{enumerate}
+
+Dan \textit{output} sebagai respon dari \textit{request client} adalah sebagai berikut :
+
+\begin{enumerate}[1.]
+  \item NOP. Nomor Objek Pajak yang telah dicatatkan pembayarannya.
+  \item THN. Tahun pajak untuk nomor objek pajak yang dicatatkan pembayarannya.
+  \item NTPD. Nomor Transaksi Pajak Daerah yang digunakan sebagai nomor pengesahan bahwa sebuah transaksi sudah tercatat pada basis data.
+  \item Mata Anggaran Pokok, adalah mata anggaran sebagai identitas pencatatan realisasi penerimaan pokok PBB-P2 pada pembukuan keuangan Pemerintah Kabupaten Brebes.
+  \item Pokok, adalah besarnya pokok PBB-P2 terhutang yang dibayarkan.
+  \item Mata Anggaran Sanksi, adalah mata anggaran sebagai identitas pencatatan sanksi administrasi atau denda administrasi yang muncul karena pembayaran dilakukan melewati tanggal jatuh tempo.
+  \item Sanksi, adalah besarnya sanksi administrasi atau denda administrasi yang dibayarkan.
+  \item Nama Wajib Pajak.
+  \item Alamat Objek Pajak.
+\end{enumerate}
+
+Parameter \textit{input} yang diperlukan untuk dilakukannya aktivitas ini yaitu :
+
+\begin{enumerate}[1.]
+  \item NOP, Nomor objek Pajak yang akan dilakukan pencatatan pembayaran.
+  \item THN, Tahun Pajak untuk NOP yang akan dilakukan pencatatan pembayarannya.
+  \item Tanggal Pembayaran, tanggal terjadinya pembayaran
+  \item Jam Bayar, jam terjadinya pembayaran.
+\end{enumerate}
+
+Proses yang terjadi tentu saja parameter-parameter \textit{input} yang ada akan dilakukan pemeriksaan dasar terlebih dahulu, setelah itu baru prosesnya akan melakukan eksekusi terhadap \textit{store procedure} yang ada pada sistem basis data dan menghasilkan \textit{output} seperti yang diinginkan diatas.
+
+\subsection{Aktivitas \textit{Reversal} Pembayaran}
+
+\textit{Output} yang diharapkan terjadi pada basis data dari aktivitas \textit{reversal} ini yaitu :
+
+\begin{enumerate}[1.]
+  \item Terhapusnya pencatatan pembayaran pada tabel PEMBAYARAN\_SPPT untuk NOP dan tahun pajak yang diminta.
+  \item Berubahnya isi kolom STATUS\_PEMBAYARAN\_SPPT pada tabel SPPT dari 1 (satu) yang artinya sudah bayar ke 0 (nol) menjadi belum bayar, tentunya sesuai dengan NOP dan tahun pajak yang diinginkan.
+  \item Melakukan pencatatan aktivitas \textit{reversal} pada tabel LOG\_REVERSAL.
+\end{enumerate}
+
+Sedangkan \textit{output} yang diharapkan untuk merespon \textit{request client} adalah data-data berikut :
+
+\begin{enumerate}[1.]
+  \item NOP, Nomor Objek Pajak yang dilakukan \textit{reversal} pembayarannya.
+  \item THN, tahun pajak untuk nomor objek pajak yang dilakukan \textit{reversal} pembayarannya.
+  \item NTPD, Nomor Transaksi Pajak Daerah yang telah dilakukan \textit{reversal} atau pembatalan pencatatan pembayarannya.
+\end{enumerate}
+
+Parameter \textit{input} yang diperlukan untuk melakukan aktivitas \textit{reversal} ini adalah sebagai berikut :
+
+\begin{enumerate}[1.]
+  \item Nomor Objek Pajak yang dilakukan \textit{reversal} pembayarannya.
+  \item Tahun pajak untuk nomor objek pajak yang akan dilakukan \textit{reversal}.
+  \item Nomor Transaksi Pajak Daerah untuk konfirmasi transaksi mana yang akan dilakukan \textit{reversal}.
+\end{enumerate}
+
+Prosesnya pun seperti biasa akan dilakukan pemeriksaan dasar parameter terlebih dahulu, yang kemudian dilakukan pemanggilan \textit{store procedure} pada sistem basis data sehingga \textit{output} yang diharapkan dapat dihasilkan.
 
 \end{document}
